@@ -5,6 +5,8 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.views import APIView
 from .serializers import UserSerializer
 from .models import User
+from django.shortcuts import get_object_or_404
+from rest_framework import status
 import jwt, datetime
 
 @api_view(['GET'])
@@ -64,6 +66,15 @@ class UserView(APIView):
 
         return Response(serializer.data)
 
+class UserDeleteView(APIView):
+    def delete(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        try:
+            user.delete()
+            return Response({"message": "User deleted"}, status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
 class LogoutView(APIView):
     def post(self, request):
         response = Response()
