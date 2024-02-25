@@ -81,11 +81,9 @@ WSGI_APPLICATION = 'CS_Elective.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': '5g5*-b*gD-5-eG4FDccDCDCGDEb54cgA',
-        'HOST': 'viaduct.proxy.rlwy.net',
-        'PORT': '21402',
+        'NAME': 'CS_Elective',
+        'USER': 'Papss',
+        'PASSWORD': '12345',
     }
 }
 
