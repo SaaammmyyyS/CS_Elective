@@ -66,6 +66,27 @@ class UserView(APIView):
 
         return Response(serializer.data)
 
+    def put(self, request):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('Unauthenticated!')
+        try:
+            payload = jwt.decode(jwt=token, key='secret', algorithms=["HS256"])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Unauthenticated!')
+
+        user = User.objects.filter(id=payload['id']).first()
+
+        new_email = request.data.get('email')
+        if new_email:
+            user.email = new_email
+            user.save()
+            serializer = UserSerializer(user)
+            return Response(serializer.data)
+        else:
+            return Response({'error': 'Email not provided'}, status=400)
+
 class UserDeleteView(APIView):
     def delete(self, request, user_id):
         user = get_object_or_404(User, id=user_id)
@@ -74,7 +95,7 @@ class UserDeleteView(APIView):
             return Response({"message": "User deleted"}, status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
 class LogoutView(APIView):
     def post(self, request):
         response = Response()
