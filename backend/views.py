@@ -107,7 +107,7 @@ class LogoutView(APIView):
         return response
 
 class AllUsersView(APIView):
-    def get(seld,request):
+    def get(self,request):
         token = request.COOKIES.get('jwt')
 
         if not token:
