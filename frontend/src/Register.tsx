@@ -1,26 +1,30 @@
 import React, {SyntheticEvent, useState} from 'react';
 
-const App = () => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [redirect, setRedirect] = useState(false);
+const Register = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [redirect, setRedirect] = useState(false);
 
-    const submit = async (e: SyntheticEvent) => {
-        e.preventDefault();
-
-        await fetch('http://localhost:8000/api/register', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                name,
-                email,
-                password
-            })
-        });
-
-        setRedirect(true);
+  const submit = async (e: SyntheticEvent) => {
+    e.preventDefault();
+    if (password.length < 8) {
+      alert('Password must be at least 8 characters long.');
+      return;
     }
+
+    await fetch('http://localhost:8000/api/register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            name,
+            email,
+            password
+        })
+    });
+
+    setRedirect(true);
+  }
 
 
   return (
@@ -63,4 +67,4 @@ const App = () => {
   );
 }
 
-export default App;
+export default Register;
