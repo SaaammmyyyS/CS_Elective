@@ -1,6 +1,7 @@
 import React, {SyntheticEvent, useState} from 'react';
 import Navbar from '../components/navbar';
 import TextField from '../components/ui/TextField';
+import Button from '../components/ui/Button';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -76,7 +77,7 @@ const Register = () => {
               </div>
             </div>
             <div>
-              <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
+              <Button type="submit">Sign in</Button>
             </div>
           </form>
         </div>
