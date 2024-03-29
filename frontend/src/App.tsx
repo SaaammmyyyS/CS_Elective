@@ -6,6 +6,7 @@ import {
 import Register from "./pages/Register";
 import Login from "./pages/login";
 import Navbar from "./components/navbar";
+import Update from "./pages/update";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/navbar" element={<Navbar />} />
+                <Route path="/update" element={<Update />} />
             </Routes>
         </BrowserRouter>
     );
