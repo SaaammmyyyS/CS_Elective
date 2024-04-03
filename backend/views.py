@@ -90,7 +90,7 @@ class UserView(APIView):
 class UserDeleteView(APIView):
     def delete(self, request):
         try:
-            token = request.COOKIES.get('jwt')  # Extract JWT token from the cookie
+            token = request.COOKIES.get('jwt')  
 
             if not token:
                 raise AuthenticationFailed('Unauthenticated!')
@@ -109,7 +109,7 @@ class UserDeleteView(APIView):
                 user.delete()
                 return Response({"message": "User deleted"}, status=status.HTTP_204_NO_CONTENT)
             except Exception as e:
-                print("Error deleting user:", e)  # Log the error if deletion fails
+                print("Error deleting user:", e) 
                 return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except AuthenticationFailed as e:
             return Response({"error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
