@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './navbar'; // Import the Navbar component
+import Navbar from './navbar'; 
 
 const DeleteUser = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [error, setError] = useState<string>('');
-  const [token, setToken] = useState<string | null>(null); // State to hold the JWT token
+  const [token, setToken] = useState<string | null>(null); 
 
   useEffect(() => {
-    const jwtToken = getCookie('jwt'); // Retrieve JWT token from cookies
-    setToken(jwtToken); // Set the token state
+    const jwtToken = getCookie('jwt'); 
+    setToken(jwtToken); 
   }, []);
 
   const handleDelete = async () => {
@@ -33,7 +33,7 @@ const DeleteUser = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        credentials: 'include', // Include credentials (cookies) in the request
+        credentials: 'include', 
       });
 
       if (!response.ok) {
