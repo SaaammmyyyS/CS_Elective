@@ -7,8 +7,8 @@ import Register from "./pages/Register";
 import Login from "./pages/login";
 import Navbar from "./components/navbar";
 import Update from "./pages/update";
-import DeleteUser from "./components/deleteUser"; // Imported from 18-create-delete-user-page branch
-import ProfilePage from "./pages/profile"; // Imported from main branch
+import DeleteUser from "./components/deleteUser"; 
+import ProfilePage from "./pages/profile";
 
 function App() {
     return (
@@ -18,8 +18,8 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/navbar" element={<Navbar />} />
                 <Route path="/update" element={<Update />} />
-                <Route path="/user/delete" element={<DeleteUser />} /> {/* Keep this route */}
-                <Route path="/user" element={<ProfilePage />} /> {/* Keep this route */}
+                <Route path="/user/delete" element={<DeleteUser />} /> 
+                <Route path="/user" element={<ProfilePage />} />
             </Routes>
         </BrowserRouter>
     );
