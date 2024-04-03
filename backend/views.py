@@ -43,7 +43,7 @@ class LoginView(APIView):
 
         response = Response()
 
-        response.set_cookie(key='jwt', value=token, httponly=True)
+        response.set_cookie(key='jwt', value=token, httponly=False)
         response.data = {
             'jwt': token
         }
@@ -88,14 +88,32 @@ class UserView(APIView):
             return Response({'error': 'Email not provided'}, status=400)
 
 class UserDeleteView(APIView):
-    def delete(self, request, user_id):
-        user = get_object_or_404(User, id=user_id)
+    def delete(self, request):
         try:
-            user.delete()
-            return Response({"message": "User deleted"}, status=status.HTTP_204_NO_CONTENT)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            token = request.COOKIES.get('jwt')  # Extract JWT token from the cookie
 
+            if not token:
+                raise AuthenticationFailed('Unauthenticated!')
+
+            try:
+                payload = jwt.decode(jwt=token, key='secret', algorithms=["HS256"])
+            except jwt.ExpiredSignatureError:
+                raise AuthenticationFailed('Token expired')
+            except jwt.InvalidTokenError:
+                raise AuthenticationFailed('Invalid token')
+
+            user_id = payload['id']
+            user = get_object_or_404(User, id=user_id)
+
+            try:
+                user.delete()
+                return Response({"message": "User deleted"}, status=status.HTTP_204_NO_CONTENT)
+            except Exception as e:
+                print("Error deleting user:", e)  # Log the error if deletion fails
+                return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except AuthenticationFailed as e:
+            return Response({"error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
+        
 class LogoutView(APIView):
     def post(self, request):
         response = Response()
