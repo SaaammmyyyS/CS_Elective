@@ -7,7 +7,9 @@ from .serializers import UserSerializer
 from .models import User
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 import jwt, datetime
+
 
 @api_view(['GET'])
 def hello_world(request):
@@ -125,16 +127,22 @@ class LogoutView(APIView):
         return response
 
 class AllUsersView(APIView):
-    def get(self,request):
+    pagination_class = PageNumberPagination
+    paginate_by = 10
+    
+    def get(self,request,  *args, **kwargs):
         token = request.COOKIES.get('jwt')
-
         if not token:
             raise AuthenticationFailed('Unauthenticated!')
         try:
             payload = jwt.decode(jwt=token, key='secret', algorithms=["HS256"])
+            queryset = User.objects.all()
+            paginator = self.pagination_class()
+            paginated_queryset = paginator.paginate_queryset(queryset, request)
+            serializer = UserSerializer(paginated_queryset, many=True)
+            return paginator.get_paginated_response(serializer.data)
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Unauthenticated!')
-        user = User.objects.all()
-        serializer = UserSerializer(user, many=True)
-        return Response(serializer.data)
+       
+        
 
