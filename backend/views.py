@@ -10,11 +10,6 @@ from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 import jwt, datetime
 
-
-@api_view(['GET'])
-def hello_world(request):
-    return Response({'message': 'Hello, world!'})
-
 class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -82,6 +77,10 @@ class UserView(APIView):
 
         new_email = request.data.get('email')
         if new_email:
+            existing_user_with_email = User.objects.filter(email=new_email).exclude(id=user.id).first()
+            if existing_user_with_email:
+                return Response({'error': 'Email already exists'}, status=400)
+
             user.email = new_email
             user.save()
             serializer = UserSerializer(user)
@@ -89,10 +88,11 @@ class UserView(APIView):
         else:
             return Response({'error': 'Email not provided'}, status=400)
 
+
 class UserDeleteView(APIView):
     def delete(self, request):
         try:
-            token = request.COOKIES.get('jwt')  
+            token = request.COOKIES.get('jwt')
 
             if not token:
                 raise AuthenticationFailed('Unauthenticated!')
@@ -111,11 +111,11 @@ class UserDeleteView(APIView):
                 user.delete()
                 return Response({"message": "User deleted"}, status=status.HTTP_204_NO_CONTENT)
             except Exception as e:
-                print("Error deleting user:", e) 
+                print("Error deleting user:", e)
                 return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except AuthenticationFailed as e:
             return Response({"error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
-        
+
 class LogoutView(APIView):
     def post(self, request):
         response = Response()
@@ -129,7 +129,7 @@ class LogoutView(APIView):
 class AllUsersView(APIView):
     pagination_class = PageNumberPagination
     paginate_by = 10
-    
+
     def get(self,request,  *args, **kwargs):
         token = request.COOKIES.get('jwt')
         if not token:
@@ -143,6 +143,6 @@ class AllUsersView(APIView):
             return paginator.get_paginated_response(serializer.data)
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Unauthenticated!')
-       
-        
+
+
 
