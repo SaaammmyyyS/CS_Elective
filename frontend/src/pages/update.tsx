@@ -34,33 +34,7 @@ const Update = () => {
     e.preventDefault();
 
     if (!email) {
-      if (!email) {
-        toast.warning("Please fill in all fields.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-        return;
-      }
-      return;
-    }
-
-    const response = await fetch('http://localhost:8000/api/user/update/', {
-      method: 'PUT',
-      headers: {'Content-Type': 'application/json'},
-      credentials: 'include',
-      body: JSON.stringify({
-          email,
-      })
-    });
-
-    if (response.ok) {
-      toast.success("Update Successful!", {
+      toast.warning("Please fill in the email field.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -70,8 +44,50 @@ const Update = () => {
         progress: undefined,
         theme: "dark",
       });
-    } else {
-      setError('This email address is already registered.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8000/api/user/update/', {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({
+            email,
+        })
+      });
+
+      if (response.ok) {
+        toast.success("Update Successful!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        const data = await response.json();
+        if (data.error) {
+          toast.error(data.error, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        } else {
+          setError('Failed to update user email.');
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      setError('Failed to update user email.');
     }
   }
 
