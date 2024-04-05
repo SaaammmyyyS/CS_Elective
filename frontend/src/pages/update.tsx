@@ -2,6 +2,7 @@ import { SyntheticEvent, useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import TextField from "../components/ui/TextField";
 import Button from "../components/ui/Button";
+import { toast } from "react-toastify";
 
 const Update = () => {
   const [email, setEmail] = useState('');
@@ -33,7 +34,19 @@ const Update = () => {
     e.preventDefault();
 
     if (!email) {
-      setError('Please fill in all fields.');
+      if (!email) {
+        toast.warning("Please fill in all fields.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
+      }
       return;
     }
 
@@ -47,7 +60,16 @@ const Update = () => {
     });
 
     if (response.ok) {
-      setError('');
+      toast.success("Update Successful!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     } else {
       setError('This email address is already registered.');
     }

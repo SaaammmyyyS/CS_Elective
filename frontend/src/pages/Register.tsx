@@ -2,17 +2,41 @@ import React, {SyntheticEvent, useState} from 'react';
 import Navbar from '../components/navbar';
 import TextField from '../components/ui/TextField';
 import Button from '../components/ui/Button';
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [redirect, setRedirect] = useState(false);
+  const [, setRedirect] = useState(false);
 
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    if (!name || !email || !password) {
+      toast.warning("Please fill in all fields.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      return;
+    }
+
     if (password.length < 8) {
-      alert('Password must be at least 8 characters long.');
+      toast.warning("Password must be at least 8 characters long.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       return;
     }
 
@@ -25,7 +49,16 @@ const Register = () => {
             password
         })
     });
-
+    toast.success("Register Successful!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
     setRedirect(true);
   }
 
