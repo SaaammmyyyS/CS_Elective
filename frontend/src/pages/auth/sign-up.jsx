@@ -7,12 +7,14 @@ import {
 } from "@material-tailwind/react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate  } from "react-router-dom";
 
 export function SignUp() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const navigateTo = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -53,7 +55,19 @@ export function SignUp() {
         },
         body: JSON.stringify({ name, email, password }),
       });
-      if (!response.ok) {
+      if (response.ok) {
+        toast.success("Successfully registered. You can now sign in!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        navigateTo('/auth/sign-in');
+      } else {
         toast.warning("Email already exists. Please use a different email address.", {
           position: "top-right",
           autoClose: 3000,

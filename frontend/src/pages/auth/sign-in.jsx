@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate  } from "react-router-dom";
 import {
   Card,
   Input,
@@ -14,6 +15,7 @@ import { Link } from "react-router-dom";
 export function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigateTo = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,6 +49,7 @@ export function SignIn() {
         progress: undefined,
         theme: "dark",
       });
+      navigateTo('/dashboard/home')
     } catch (error) {
       toast.error("Invalid email or password. Please try again.", {
         position: "top-right",
