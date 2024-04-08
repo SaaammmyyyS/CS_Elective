@@ -10,6 +10,12 @@ from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 import jwt, datetime
 
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 10
+    
+    
 class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -127,8 +133,7 @@ class LogoutView(APIView):
         return response
 
 class AllUsersView(APIView):
-    pagination_class = PageNumberPagination
-    paginate_by = 10
+    pagination_class = StandardResultsSetPagination
 
     def get(self,request,  *args, **kwargs):
         token = request.COOKIES.get('jwt')
