@@ -14,6 +14,10 @@ export const platformSettingsData = [
         checked: true,
         label: "Email me when someone mentions me",
       },
+      {
+        checked: false,
+        label: "Delete Account", 
+      },
     ],
   },
   {

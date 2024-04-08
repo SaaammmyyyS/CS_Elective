@@ -18,11 +18,15 @@ import {
   Cog6ToothIcon,
   PencilIcon,
 } from "@heroicons/react/24/solid";
+import React, { useState } from "react";
+import DeleteUser from "@/widgets/ui/DeleteUser";
 import { Link } from "react-router-dom";
 import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
 import { platformSettingsData, conversationsData, projectsData } from "@/data";
 
 export function Profile() {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   return (
     <>
       <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url('/img/background-image.png')] bg-cover	bg-center">
@@ -70,7 +74,7 @@ export function Profile() {
               </Tabs>
             </div>
           </div>
-          <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
+          <div className="grid-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
             <div>
               <Typography variant="h6" color="blue-gray" className="mb-3">
                 Platform Settings
@@ -78,20 +82,34 @@ export function Profile() {
               <div className="flex flex-col gap-12">
                 {platformSettingsData.map(({ title, options }) => (
                   <div key={title}>
-                    <Typography className="mb-4 block text-xs font-semibold uppercase text-blue-gray-500">
+                    <Typography variant="h6" color="blue-gray" className="mb-3">
                       {title}
                     </Typography>
-                    <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-12">
                       {options.map(({ checked, label }) => (
-                        <Switch
-                          key={label}
-                          id={label}
-                          label={label}
-                          defaultChecked={checked}
-                          labelProps={{
-                            className: "text-sm font-normal text-blue-gray-500",
-                          }}
-                        />
+                        <div key={label}>
+                          {label === "Delete Account" && !showDeleteModal ? (
+                            <Button
+                              onClick={() => setShowDeleteModal(true)}
+                              variant="text"
+                              color="red"
+                              size="sm"
+                              className="hover:bg-red-500 hover:text-white focus:bg-red-500 focus:text-white active:bg-red-600 active:text-white transition-colors"
+                            >
+                              {label}
+                            </Button>
+                          ) : label === "Delete Account" && showDeleteModal ? (
+                            <DeleteUser setShowDeleteModal={setShowDeleteModal} />
+                          ) : (
+                            <div className="flex items-center">
+                              <Switch
+                                id={label}
+                                label={label}
+                                defaultChecked={checked}
+                              />
+                            </div>
+                          )}
+                        </div>
                       ))}
                     </div>
                   </div>
