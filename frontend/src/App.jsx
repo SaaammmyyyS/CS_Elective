@@ -12,7 +12,7 @@ function App() {
       </Route>
 
       <Route path="/auth/*" element={<Auth />} />
-      {/* <Route path="*" element={<Navigate to="/auth/sign-in" replace />} /> */}
+      <Route path="*" element={<Navigate to="/auth/sign-in" replace />} />
 
     </Routes>
     <Cube />
