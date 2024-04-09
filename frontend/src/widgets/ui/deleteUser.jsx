@@ -13,10 +13,10 @@ const DeleteUser = ({ setShowDeleteModal }) => {
 
   const handleDelete = async () => {
     try {
-        if (!confirmDelete) {
-            setConfirmDelete(true);
-            return;
-        }
+      if (!confirmDelete) {
+        setConfirmDelete(true);
+        return;
+      }
 
       if (!token) {
         throw new Error("No jwt token found in cookies");
@@ -35,10 +35,19 @@ const DeleteUser = ({ setShowDeleteModal }) => {
         throw new Error(`Failed to delete user: ${response.statusText}`);
       }
 
+      
       setShowDeleteModal(false);
     } catch (error) {
       console.error("Error deleting user:", error);
       setError("Failed to delete user. Please try again.");
+    }
+  };
+
+  const handleCancel = () => {
+    if (confirmDelete) {
+      setConfirmDelete(false);
+    } else {
+      setShowDeleteModal(false);
     }
   };
 
@@ -67,15 +76,26 @@ const DeleteUser = ({ setShowDeleteModal }) => {
             ? "Are you absolutely sure? This action cannot be undone."
             : "This action will permanently delete your account. Proceed with caution."}
         </Typography>
-        <Button
-          onClick={handleDelete}
-          color={confirmDelete ? "red" : "gray"}
-          size="lg"
-          ripple="light"
-          rounded={true}
-        >
-          {confirmDelete ? "Confirm Delete" : "Delete Account"}
-        </Button>
+        <div className="flex gap-4">
+          <Button
+            onClick={handleDelete}
+            color={confirmDelete ? "red" : "gray"}
+            size="lg"
+            ripple="light"
+            rounded={true}
+          >
+            {confirmDelete ? "Confirm Delete" : "Delete Account"}
+          </Button>
+          <Button
+            onClick={handleCancel}
+            color={confirmDelete ? "blue-gray" : "gray"}
+            size="lg"
+            ripple="light"
+            rounded={true}
+          >
+            {confirmDelete ? "Back" : "Cancel"}
+          </Button>
+        </div>
       </div>
     </div>
   );
