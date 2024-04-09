@@ -4,18 +4,21 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.views import APIView
 from .serializers import UserSerializer
-from .models import User
+from .models import JobListing, User
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 import jwt, datetime
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+import time
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 10
-    
-    
+
+
 class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -149,5 +152,58 @@ class AllUsersView(APIView):
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Unauthenticated!')
 
+
+class JobStreetView(APIView):
+    def post(self, request):
+        keyword = request.data.get('keyword')
+
+        if not keyword:
+            return Response({"error": "Keyword is required"}, status=400)
+
+        try:
+            job_listings = self.scrape_job_listings(keyword)
+            self.save_job_listings(job_listings)
+            return Response({"message": "Job listings scraped and saved successfully"})
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
+
+    def scrape_job_listings(self, keyword):
+        job_listings = []
+
+        try:
+            driver = webdriver.Chrome(ChromeDriverManager().install())
+            driver.get("https://www.jobstreet.com.ph/")
+            driver.maximize_window()
+
+            search_input = driver.find_element_by_xpath("//input[@id='keywords-input']")
+            search_input.send_keys(keyword)
+            search_button = driver.find_element_by_xpath("//button[@id='searchButton']")
+            search_button.click()
+
+            time.sleep(5)
+
+            job_titles = driver.find_elements_by_xpath("//a[@data-automation='jobTitle']")
+            job_companies = driver.find_elements_by_xpath("//a[@data-automation='jobCompany']")
+            job_urls = [element.get_attribute('href') for element in driver.find_elements_by_xpath("//a[@data-automation='job-list-item-link-overlay']")]
+
+            for title, company, url in zip(job_titles, job_companies, job_urls):
+                job_listings.append({
+                    'title': title.text,
+                    'company': company.text,
+                    'url': url
+                })
+
+            return job_listings
+        finally:
+            driver.quit()
+
+    def save_job_listings(self, job_listings):
+        for listing in job_listings:
+            JobListing.objects.create(
+                title=listing['title'],
+                company=listing['company'],
+                url=listing['url'],
+                status='open'
+            )
 
 

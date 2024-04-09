@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import JobListing, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -17,3 +17,11 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+class JobListingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobListing
+        fields = ['id', 'title', 'company', 'url', 'status']
+
+    def create(self, validated_data):
+        return JobListing.objects.create(**validated_data)
