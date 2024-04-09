@@ -35,7 +35,7 @@ const DeleteUser = ({ setShowDeleteModal }) => {
         throw new Error(`Failed to delete user: ${response.statusText}`);
       }
 
-      // Close the modal after successful deletion
+      
       setShowDeleteModal(false);
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -45,10 +45,8 @@ const DeleteUser = ({ setShowDeleteModal }) => {
 
   const handleCancel = () => {
     if (confirmDelete) {
-      // If confirmation step is active, cancel it
       setConfirmDelete(false);
     } else {
-      // Otherwise, close the modal
       setShowDeleteModal(false);
     }
   };
