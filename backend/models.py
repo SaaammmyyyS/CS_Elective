@@ -6,11 +6,11 @@ from CS_Elective import settings
 class User(AbstractUser):
     ROLE_CHOICES = (
         ('admin', 'Admin'),
-        ('manager', 'Manager'),
+        ('user', 'User'),
     )
 
     name = models.CharField(max_length=255)
-    role = models.CharField(max_length=255, choices=ROLE_CHOICES, default='admin')
+    role = models.CharField(max_length=255, choices=ROLE_CHOICES, default='user')
     email = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255, unique=True)
     username = None
@@ -28,7 +28,5 @@ class JobListing(models.Model):
     title = models.CharField(max_length=255)
     company = models.CharField(max_length=255)
     url = models.CharField(max_length=255, default='')
-    # description = models.TextField()
-    # date_posted = models.DateField()
-    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')

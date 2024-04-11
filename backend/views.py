@@ -12,6 +12,9 @@ import jwt, datetime
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 import time
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
@@ -154,21 +157,26 @@ class AllUsersView(APIView):
 
 
 class JobStreetView(APIView):
+
     def post(self, request):
         keyword = request.data.get('keyword')
 
         if not keyword:
-            return Response({"error": "Keyword is required"}, status=400)
+            return Response({"error": "Keyword is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
+            user_id = self.extract_user_id_from_jwt(request)
             job_listings = self.scrape_job_listings(keyword)
-            self.save_job_listings(job_listings)
+            self.save_job_listings(job_listings, user_id)
             return Response({"message": "Job listings scraped and saved successfully"})
+        except AuthenticationFailed as e:
+            return Response({"error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
         except Exception as e:
-            return Response({"error": str(e)}, status=500)
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def scrape_job_listings(self, keyword):
         job_listings = []
+        driver = None
 
         try:
             driver = webdriver.Chrome(ChromeDriverManager().install())
@@ -180,7 +188,7 @@ class JobStreetView(APIView):
             search_button = driver.find_element_by_xpath("//button[@id='searchButton']")
             search_button.click()
 
-            time.sleep(5)
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//a[@data-automation='jobTitle']")))
 
             job_titles = driver.find_elements_by_xpath("//a[@data-automation='jobTitle']")
             job_companies = driver.find_elements_by_xpath("//a[@data-automation='jobCompany']")
@@ -195,15 +203,36 @@ class JobStreetView(APIView):
 
             return job_listings
         finally:
-            driver.quit()
+            if driver:
+                driver.quit()
 
-    def save_job_listings(self, job_listings):
+    def extract_user_id_from_jwt(self, request):
+        token = request.COOKIES.get('jwt')
+        if token:
+            try:
+                payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+                return payload.get('id')
+            except jwt.ExpiredSignatureError:
+                raise AuthenticationFailed('JWT expired')
+            except jwt.InvalidTokenError:
+                raise AuthenticationFailed('Invalid token')
+        else:
+            raise AuthenticationFailed('JWT token not found in cookies')
+
+    def save_job_listings(self, job_listings, user_id):
+        if not job_listings:
+            return Response({"error": "No job listings to save."}, status=status.HTTP_400_BAD_REQUEST)
+
         for listing in job_listings:
-            JobListing.objects.create(
-                title=listing['title'],
-                company=listing['company'],
-                url=listing['url'],
-                status='open'
-            )
+            try:
+                JobListing.objects.create(
+                    title=listing['title'],
+                    company=listing['company'],
+                    url=listing['url'],
+                    user_id=user_id,
+                    status='open'
+                )
+            except Exception as e:
+                return Response({"error": {e}}, status=status.HTTP_400_BAD_REQUEST)
 
 
