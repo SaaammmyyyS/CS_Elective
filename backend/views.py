@@ -160,21 +160,24 @@ class JobStreetView(APIView):
 
     def post(self, request):
         keyword = request.data.get('keyword')
+        location = request.data.get('location')
+        min_salary = request.data.get('min_salary')
+        max_salary = request.data.get('max_salary')
 
         if not keyword:
             return Response({"error": "Keyword is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user_id = self.extract_user_id_from_jwt(request)
-            job_listings = self.scrape_job_listings(keyword)
-            self.save_job_listings(job_listings, user_id)
+            job_listings = self.scrape_job_listings(keyword, location, min_salary, max_salary)
+            self.save_job_listings(job_listings, user_id, keyword)
             return Response({"message": "Job listings scraped and saved successfully"})
         except AuthenticationFailed as e:
             return Response({"error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def scrape_job_listings(self, keyword):
+    def scrape_job_listings(self, keyword, location, min_salary, max_salary):
         job_listings = []
         driver = None
 
@@ -185,8 +188,25 @@ class JobStreetView(APIView):
 
             search_input = driver.find_element_by_xpath("//input[@id='keywords-input']")
             search_input.send_keys(keyword)
+            location_input = driver.find_element_by_xpath("//input[@data-automation='SearchBar__Where']")
+            location_input.send_keys(location)
+
             search_button = driver.find_element_by_xpath("//button[@id='searchButton']")
             search_button.click()
+
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//a[@data-automation='jobTitle']")))
+
+            dropdown_min_salary = driver.find_element_by_xpath("//label[@data-automation='toggleSalaryFromPanel']")
+            dropdown_min_salary.click()
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, f"//a[@data-automation='{min_salary}']")))
+            min_salary_element = driver.find_element_by_xpath(f"//a[@data-automation='{min_salary}']")
+            min_salary_element.click()
+
+            dropdown_max_salary = driver.find_element_by_xpath("//label[@data-automation='toggleSalaryToPanel']")
+            dropdown_max_salary.click()
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, f"//a[@data-automation='{max_salary}']")))
+            max_salary_element = driver.find_elements_by_xpath(f"//a[@data-automation='{max_salary}']")
+            max_salary_element[1].click()
 
             WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//a[@data-automation='jobTitle']")))
 
@@ -219,7 +239,7 @@ class JobStreetView(APIView):
         else:
             raise AuthenticationFailed('JWT token not found in cookies')
 
-    def save_job_listings(self, job_listings, user_id):
+    def save_job_listings(self, job_listings, user_id, keyword):
         if not job_listings:
             return Response({"error": "No job listings to save."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -227,6 +247,7 @@ class JobStreetView(APIView):
             try:
                 JobListing.objects.create(
                     title=listing['title'],
+                    keyword=keyword,
                     company=listing['company'],
                     url=listing['url'],
                     user_id=user_id,
@@ -234,5 +255,3 @@ class JobStreetView(APIView):
                 )
             except Exception as e:
                 return Response({"error": {e}}, status=status.HTTP_400_BAD_REQUEST)
-
-
