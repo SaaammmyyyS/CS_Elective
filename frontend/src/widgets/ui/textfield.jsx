@@ -2,11 +2,8 @@ import React from "react";
 import { Input } from "@material-tailwind/react";
 
 const TextField = ({ inputLabel }) => {
-  return (
-    <div>
-      <Input variant="outlined" label={inputLabel} />
-    </div>
-  );
+  console.log(inputLabel);
+  return <Input variant="outlined" label={inputLabel} />;
 };
 
 export default TextField;
