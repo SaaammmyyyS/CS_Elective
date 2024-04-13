@@ -28,6 +28,6 @@ class JobListing(models.Model):
     title = models.CharField(max_length=255)
     company = models.CharField(max_length=255)
     keyword = models.CharField(max_length=255, default='')
-    url = models.CharField(max_length=255, default='')
+    url = models.CharField(max_length=255, default='', unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')

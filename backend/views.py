@@ -15,6 +15,7 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from django.db import IntegrityError
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
@@ -209,8 +210,8 @@ class JobStreetView(APIView):
             max_salary_element[1].click()
 
             WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//a[@data-automation='jobTitle']")))
-
             job_titles = driver.find_elements_by_xpath("//a[@data-automation='jobTitle']")
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//a[@data-automation='jobCompany']")))
             job_companies = driver.find_elements_by_xpath("//a[@data-automation='jobCompany']")
             job_urls = [element.get_attribute('href') for element in driver.find_elements_by_xpath("//a[@data-automation='job-list-item-link-overlay']")]
 
@@ -243,8 +244,24 @@ class JobStreetView(APIView):
         if not job_listings:
             return Response({"error": "No job listings to save."}, status=status.HTTP_400_BAD_REQUEST)
 
+        existing_titles = JobListing.objects.filter(user_id=user_id, title__in=[listing['title'] for listing in job_listings]).values_list('title', flat=True)
+
+        duplicates = []
+        unique_listings = []
+
         for listing in job_listings:
-            try:
+            if listing['title'] in existing_titles:
+                duplicates.append(listing)
+            else:
+                unique_listings.append(listing)
+
+        if duplicates:
+            print("Duplicates found:")
+            for duplicate in duplicates:
+                print(duplicate)
+
+        try:
+            for listing in unique_listings:
                 JobListing.objects.create(
                     title=listing['title'],
                     keyword=keyword,
@@ -253,5 +270,9 @@ class JobStreetView(APIView):
                     user_id=user_id,
                     status='open'
                 )
-            except Exception as e:
-                return Response({"error": {e}}, status=status.HTTP_400_BAD_REQUEST)
+        except IntegrityError as e:
+            return Response({"error": {e}}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": {e}}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response({"message": "Job listings scraped and saved successfully"})
