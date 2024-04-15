@@ -9,7 +9,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/SaaammmyyyS/CS_Elective">
-    <img src="frontend/src/logo.svg" alt="Logo" width="80" height="80">
+    <img src="frontend/src/imgs/logo.svg" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">ThreadWorks Apparel Inventory Manager</h3>
@@ -55,26 +55,26 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-The ThreadWorks Apparel Inventory Manager is a comprehensive web application designed to streamline inventory management processes for a clothing brand. It consists of two main parts: an overall admin interface and branch manager interfaces. 
+The Job Scraper is a Python application designed to automate the process of searching for job listings on various websites. By utilizing Selenium WebDriver, the project extracts job details such as title, company, location, and description from job listing pages, allowing users to efficiently browse and filter through available job opportunities.
 
-* Admin: The admin has access to centralized information regarding stock levels, sales reports, and other key metrics across all branches of the clothing store. This includes the ability to monitor inventory levels, track sales performance, and generate reports for analysis.
+* Admin: The admin has access to centralized information regarding job listings, user activity, and system analytics. This includes the ability to monitor job search trends, track user engagement, and generate reports for analysis.
 
- * Branch Managers: Branch managers, representing different branches of the clothing store, can use the system to create order items, manage their branch's inventory, and view inventory levels of other branches. This allows for efficient inventory management, ensuring that each branch has the necessary stock levels to meet customer demand.
+ * Users: Users, invited by the admin, can utilize the system to browse job listings, apply filters, and manage their job search activity. This allows for efficient job hunting, ensuring that users have access to relevant job opportunities tailored to their preferences.
 
 ### How this project helps
-ThreadWorks Apparel Inventory Manager offers several benefits to its users:
+The Job Scraper offers several benefits to job seekers:
 
-1. **Centralized Management:** The system provides a centralized platform for administrators to oversee inventory and sales data across all branches, facilitating better decision-making and resource allocation.
+1. **Automation:** The application automates the tedious task of manually searching for job listings by scraping data from multiple websites simultaneously, saving time and effort for users.
 
-2. **Efficient Inventory Tracking:** Branch managers can easily monitor inventory levels and track stock movement in real-time, enabling timely replenishment and preventing stockouts or overstock situations.
+2. **Comprehensive Data Extraction:** By utilizing Selenium WebDriver, the project ensures accurate extraction of job details from various websites, providing users with comprehensive information about available job opportunities.
 
-3. **Improved Order Management:** Branch managers can create order items directly within the system, streamlining the order fulfillment process and ensuring accurate inventory management.
+3. **Customizable Filters:** Users can customize their job search criteria, such as location, industry, or job title, to narrow down search results and find relevant job listings more efficiently.
 
-4. **Enhanced Visibility:** With access to inventory data from other branches, branch managers can quickly locate specific items, facilitate inter-branch transfers, and optimize inventory distribution based on demand patterns.
+4. **Real-time Updates:** The scraper retrieves the latest job listings from websites in real-time, ensuring that users have access to up-to-date job opportunities as soon as they are posted.
 
-5. **Data-Driven Insights:** The system generates comprehensive sales reports and analytics, empowering administrators and branch managers to identify trends, forecast demand, and make informed decisions to optimize inventory levels and maximize profitability.
+5. **Ease of Use:** With a user-friendly interface, the application makes it easy for users to navigate and interact with job listings, facilitating a seamless job search experience.
 
-Overall, ThreadWorks Apparel Inventory Manager serves as a powerful tool for efficiently managing inventory, improving operational efficiency, and enhancing the overall performance of the clothing brand.
+Overall, the Job Scraper using Selenium WebDriver serves as a valuable tool for job seekers looking to streamline their job search process and discover new employment opportunities with ease.
 
 
 
@@ -96,8 +96,7 @@ Overall, ThreadWorks Apparel Inventory Manager serves as a powerful tool for eff
 
 
 
-<!-- GETTING STARTED -->
-## Requirements
+### Requirements
 
 This project requires the following dependencies to be installed:
 
@@ -131,14 +130,20 @@ This project requires the following dependencies to be installed:
     pip install django-cors-headers
     ```
 
+8. **Selenium**: Selenium is required for web scraping functionality. Install it using pip:
+
+    ```bash
+    pip install selenium
+    ```
+
 ### Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine.
 
-1. **Clone the repository**: 
-   
+1. **Clone the repository**:
+
     ```bash
-    git clone https://github.com/your_username/your_project.git
+    git clone https://github.com/SaaammmyyyS/CS_Elective.git
     ```
 
 2. **Install Node.js dependencies** (if applicable):
