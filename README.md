@@ -12,10 +12,10 @@
     <img src="frontend/src/imgs/logo.svg" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">ThreadWorks Apparel Inventory Manager</h3>
+  <h3 align="center">Job Scraper</h3>
 
   <p align="center">
-     Simplifying apparel inventory management
+     Quit job hunting like it's your full-time job! Let our Job Scrapper do the dirty work while you Netflix and apply!
     <br />
     <a href="https://github.com/SaaammmyyyS/CS_Elective"><strong>Explore the project»</strong></a>
     <br />
