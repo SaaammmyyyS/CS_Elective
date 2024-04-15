@@ -178,6 +178,17 @@ class JobStreetView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    def get(self, request):
+        try:
+            user_id = self.extract_user_id_from_jwt(request)
+            job_listings = JobListing.objects.filter(user_id=user_id).values('title', 'company', 'url')
+            return Response(job_listings)
+        except AuthenticationFailed as e:
+            return Response({"error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
     def scrape_job_listings(self, keyword, location, min_salary, max_salary):
         job_listings = []
         driver = None
