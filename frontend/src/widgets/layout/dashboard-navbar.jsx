@@ -1,4 +1,7 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
+import axios from "axios";
+import { toast } from "react-toastify";
 import {
   Navbar,
   Typography,
@@ -30,7 +33,40 @@ export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
+
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const navigateTo = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await axios.post("http://localhost:8000/api/logout", null, {
+        withCredentials: true,
+      });
+      navigateTo("/auth/sign-in");
+      toast.success("Successfully logged out", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } catch (error) {
+      console.error("Logout failed", error);
+      toast.error("Logout failed", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+  };
 
   return (
     <Navbar
@@ -87,7 +123,7 @@ export function DashboardNavbar() {
             <Button
               variant="text"
               color="blue-gray"
-              className="hidden items-center gap-1 px-4 xl:flex normal-case"
+              className="hidden items-center gap-1 px-4 normal-case xl:flex"
             >
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
               Sign In
@@ -96,6 +132,25 @@ export function DashboardNavbar() {
               variant="text"
               color="blue-gray"
               className="grid xl:hidden"
+            >
+              <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
+            </IconButton>
+          </Link>
+          <Link>
+            <Button
+              variant="text"
+              color="blue-gray"
+              className="hidden items-center gap-1 px-4 normal-case xl:flex"
+              onClick={handleLogout}
+            >
+              <LogoutIcon className="h-5 w-5 text-blue-gray-500" />
+              Logout
+            </Button>
+            <IconButton
+              variant="text"
+              color="blue-gray"
+              className="grid xl:hidden"
+              onClick={handleLogout}
             >
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
             </IconButton>
