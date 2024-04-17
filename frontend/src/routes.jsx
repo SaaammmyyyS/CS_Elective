@@ -5,8 +5,15 @@ import {
   InformationCircleIcon,
   ServerStackIcon,
   RectangleStackIcon,
+  BriefcaseIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, UserList, Notifications } from "@/pages/dashboard";
+import {
+  Home,
+  Profile,
+  UserList,
+  Notifications,
+  Jobscrape,
+} from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 
 const icon = {
@@ -34,6 +41,12 @@ export const routes = [
         name: "tables",
         path: "/tables",
         element: <UserList />,
+      },
+      {
+        icon: <BriefcaseIcon {...icon} />,
+        name: "jobscrape",
+        path: "/jobscrape",
+        element: <Jobscrape />,
       },
       {
         icon: <InformationCircleIcon {...icon} />,
