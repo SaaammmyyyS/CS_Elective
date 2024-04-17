@@ -35,6 +35,7 @@ export const routes = [
         path: "/tables",
         element: <UserList />,
       },
+
       {
         icon: <InformationCircleIcon {...icon} />,
         name: "notifications",
