@@ -130,10 +130,10 @@ This project requires the following dependencies to be installed:
     pip install django-cors-headers
     ```
 
-8. **Selenium**: Selenium is required for web scraping functionality. Install it using pip:
+7. **Selenium**: Selenium is required for web scraping functionality. Install version 4.1.3 using pip:
 
     ```bash
-    pip install selenium
+    pip install selenium==4.1.3
     ```
 
 ### Getting Started
