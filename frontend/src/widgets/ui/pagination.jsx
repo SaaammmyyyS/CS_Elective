@@ -26,11 +26,17 @@ const Pagination = ({ currentPage, totalPages, fetchData }) => {
       <div className="flex items-center gap-2">
         <span className="mb-4 block w-full px-5 py-1 text-sm font-normal text-gray-500 dark:text-gray-400 md:mb-0 md:inline md:w-auto">
           Page{" "}
-          <span className="font-semibold text-gray-900 dark:text-white">
+          <span
+            data-testid="current-page"
+            className="font-semibold text-gray-900 dark:text-white"
+          >
             {currentPage}
           </span>{" "}
           of{" "}
-          <span className="font-semibold text-gray-900 dark:text-white">
+          <span
+            data-testid="last-page"
+            className="font-semibold text-gray-900 dark:text-white"
+          >
             {totalPages}
           </span>
         </span>
