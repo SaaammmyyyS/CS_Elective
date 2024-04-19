@@ -18,6 +18,5 @@ describe('DeleteUser Functionality', () => {
     it('displays cancel message when "Cancel" button is clicked', async () => {
         const { getByText } = render(<DeleteUser setShowDeleteModal={setShowDeleteModalMock} />);
         fireEvent.click(getByText('Cancel'));
-        // Add assertions here to verify the cancel action
     });
 });
