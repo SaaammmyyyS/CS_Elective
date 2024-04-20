@@ -6,9 +6,9 @@ describe('DeleteUser Rendering', () => {
     const setShowDeleteModalMock = () => {};
   
     it('renders correctly', () => {
-        const { container } = render(<DeleteUser setShowDeleteModal={setShowDeleteModalMock} />);
-        const deleteAccountElements = queryAllByText(container, /Delete Account/);
-        expect(deleteAccountElements.length).toBeGreaterThan(0);
+        const { getByRole } = render(<DeleteUser setShowDeleteModal={setShowDeleteModalMock} />);
+        const deleteAccountButton = getByRole('button', {name :/Delete Account/});
+        expect(deleteAccountButton).toBeInTheDocument();
     });
 });
 
