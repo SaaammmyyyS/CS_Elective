@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.views import APIView
-from .serializers import UserSerializer
+from .serializers import UserSerializer, JobListingSerializer
 from .models import JobListing, User
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -158,7 +158,7 @@ class AllUsersView(APIView):
 
 
 class JobStreetView(APIView):
-
+    pagination_class = StandardResultsSetPagination
     def post(self, request):
         keyword = request.data.get('keyword')
         location = request.data.get('location')
@@ -181,8 +181,11 @@ class JobStreetView(APIView):
     def get(self, request):
         try:
             user_id = self.extract_user_id_from_jwt(request)
-            job_listings = JobListing.objects.filter(user_id=user_id).values('title', 'company', 'url')
-            return Response(job_listings)
+            job_listings = JobListing.objects.filter(user_id=user_id).values('title', 'company', 'status', 'url')
+            paginator = self.pagination_class()
+            paginated_queryset = paginator.paginate_queryset(job_listings, request)
+            serializer = JobListingSerializer(paginated_queryset, many=True)
+            return paginator.get_paginated_response(serializer.data)
         except AuthenticationFailed as e:
             return Response({"error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
         except Exception as e:
