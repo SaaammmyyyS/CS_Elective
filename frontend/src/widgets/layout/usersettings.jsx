@@ -10,7 +10,6 @@ import {
 } from "@material-tailwind/react";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import ConfirmDialog from "../ui/confirmation";
 
 const Usersettings = ({ userInfo, onEmailUpdate }) => {
   const [inputEnable, setInputEnable] = useState(false);
