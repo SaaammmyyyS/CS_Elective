@@ -1,28 +1,16 @@
 import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardFooter,
-  Avatar,
   Typography,
-  Tabs,
-  TabsHeader,
-  Tab,
   Switch,
   Tooltip,
   Button,
 } from "@material-tailwind/react";
 import {
-  HomeIcon,
-  ChatBubbleLeftEllipsisIcon,
-  Cog6ToothIcon,
   PencilIcon,
 } from "@heroicons/react/24/solid";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DeleteUser from "@/widgets/ui/DeleteUser";
-import { Link, json } from "react-router-dom";
-import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
-import { platformSettingsData, conversationsData, projectsData } from "@/data";
+import { ProfileInfoCard } from "@/widgets/cards";
+import { platformSettingsData } from "@/data";
 
 const Userabout = ({ userInfo }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -92,95 +80,7 @@ const Userabout = ({ userInfo }) => {
             </Tooltip>
           }
         />
-        <div>
-          <Typography variant="h6" color="blue-gray" className="mb-3">
-            Platform Settings
-          </Typography>
-          <ul className="flex flex-col gap-6">
-            {conversationsData.map((props) => (
-              <MessageCard
-                key={props.name}
-                {...props}
-                action={
-                  <Button variant="text" size="sm">
-                    reply
-                  </Button>
-                }
-              />
-            ))}
-          </ul>
-        </div>
-      </div>
 
-      <div className="px-4 pb-4">
-        <Typography variant="h6" color="blue-gray" className="mb-2">
-          Projects
-        </Typography>
-        <Typography variant="small" className="font-normal text-blue-gray-500">
-          Architects design houses
-        </Typography>
-        <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
-          {projectsData.map(
-            ({ img, title, description, tag, route, members }) => (
-              <Card key={title} color="transparent" shadow={false}>
-                <CardHeader
-                  floated={false}
-                  color="gray"
-                  className="mx-0 mb-4 mt-0 h-64 xl:h-40"
-                >
-                  <img
-                    src={img}
-                    alt={title}
-                    className="h-full w-full object-cover"
-                  />
-                </CardHeader>
-                <CardBody className="px-1 py-0">
-                  <Typography
-                    variant="small"
-                    className="font-normal text-blue-gray-500"
-                  >
-                    {tag}
-                  </Typography>
-                  <Typography
-                    variant="h5"
-                    color="blue-gray"
-                    className="mb-2 mt-1"
-                  >
-                    {title}
-                  </Typography>
-                  <Typography
-                    variant="small"
-                    className="font-normal text-blue-gray-500"
-                  >
-                    {description}
-                  </Typography>
-                </CardBody>
-                <CardFooter className="mt-6 flex items-center justify-between px-1 py-0">
-                  <Link to={route}>
-                    <Button variant="outlined" size="sm">
-                      view project
-                    </Button>
-                  </Link>
-                  <div>
-                    {members.map(({ img, name }, key) => (
-                      <Tooltip key={name} content={name}>
-                        <Avatar
-                          src={img}
-                          alt={name}
-                          size="xs"
-                          variant="circular"
-                          className={`cursor-pointer border-2 border-white ${
-                            key === 0 ? "" : "-ml-2.5"
-                          }`}
-                        />
-                      </Tooltip>
-                    ))}
-                  </div>
-                </CardFooter>
-              </Card>
-            ),
-          )}
-        </div>
       </div>
     </>
   );
