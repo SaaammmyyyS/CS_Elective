@@ -3,10 +3,6 @@ export const platformSettingsData = [
     title: "account",
     options: [
       {
-        checked: true,
-        label: "Email me when someone follows me",
-      },
-      {
         checked: false,
         label: "Email me when someone answers on my post",
       },
@@ -16,24 +12,7 @@ export const platformSettingsData = [
       },
       {
         checked: false,
-        label: "Delete Account", 
-      },
-    ],
-  },
-  {
-    title: "application",
-    options: [
-      {
-        checked: false,
-        label: "New launches and projects",
-      },
-      {
-        checked: true,
-        label: "Monthly product updates",
-      },
-      {
-        checked: false,
-        label: "Subscribe to newsletter",
+        label: "Delete Account",
       },
     ],
   },

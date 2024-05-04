@@ -1,28 +1,17 @@
 import {
   Card,
   CardBody,
-  CardHeader,
-  CardFooter,
   Avatar,
   Typography,
   Tabs,
   TabsHeader,
   Tab,
-  Switch,
-  Tooltip,
-  Button,
 } from "@material-tailwind/react";
 import {
   HomeIcon,
-  ChatBubbleLeftEllipsisIcon,
   Cog6ToothIcon,
-  PencilIcon,
 } from "@heroicons/react/24/solid";
 import React, { useState, useEffect } from "react";
-import DeleteUser from "@/widgets/ui/DeleteUser";
-import { Link, json } from "react-router-dom";
-import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
-import { platformSettingsData, conversationsData, projectsData } from "@/data";
 import Userabout from "@/widgets/layout/userabout";
 import Usersettings from "@/widgets/layout/usersettings";
 
@@ -112,6 +101,7 @@ export function Profile() {
               />
             )}
           </div>
+
         </CardBody>
       </Card>
     </>

@@ -3,6 +3,7 @@ import { Dashboard, Auth } from "@/layouts";
 import { ToastContainer } from "react-toastify";
 import { Sugar } from "react-preloaders";
 import PrivateRoutes from "./utils/PrivateRoutes";
+import { SignIn, SignUp } from "./pages/auth";
 
 function App() {
   return (
@@ -12,8 +13,8 @@ function App() {
           <Route path="/dashboard/*" element={<Dashboard />} />
         </Route>
 
-        <Route path="/auth/*" element={<Auth />} />
-        <Route path="*" element={<Navigate to="/auth/sign-in" replace />} />
+        <Route path="/auth/sign-up" element={<SignUp />} />
+        <Route path="/auth/sign-in" element={<SignIn />} />
       </Routes>
       <Sugar
         time={2000}
