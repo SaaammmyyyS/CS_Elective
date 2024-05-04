@@ -28,11 +28,38 @@ import {
   setOpenConfigurator,
   setOpenSidenav,
 } from "@/context";
+import React, { useState, useEffect } from "react";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
+  const [userInfo, setUserInfo] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const url = `http://localhost:8000/api/user`;
+  const fetchData = async () => {
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        credentials: "include",
+      });
+      if (!response.ok) {
+        throw new Error("Error fetching data");
+      }
+
+      const data = await response.json();
+
+      setUserInfo(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
 
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
   const navigateTo = useNavigate();
@@ -119,14 +146,14 @@ export function DashboardNavbar() {
           >
             <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
           </IconButton>
-          <Link to="/auth/sign-in">
+          <Link to="/dashboard/profile">
             <Button
               variant="text"
               color="blue-gray"
               className="hidden items-center gap-1 px-4 normal-case xl:flex"
             >
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-              Sign In
+              {userInfo.name}
             </Button>
             <IconButton
               variant="text"
