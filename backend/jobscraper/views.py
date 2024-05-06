@@ -334,6 +334,8 @@ class IndeedView(APIView):
             driver.get("https://ph.indeed.com/")
             driver.maximize_window()
 
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "text-input-what")))
+
             keyword_input = driver.find_element_by_id("text-input-what")
             keyword_input.send_keys(keyword)
 
@@ -453,6 +455,8 @@ class IndeedView(APIView):
             driver = webdriver.Chrome(ChromeDriverManager().install())
             driver.get("https://ph.indeed.com/")
             driver.maximize_window()
+
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "text-input-what")))
 
             keyword_input = driver.find_element_by_id("text-input-what")
             keyword_input.send_keys(keyword)
