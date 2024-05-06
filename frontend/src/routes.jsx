@@ -3,6 +3,7 @@ import {
   UserCircleIcon,
   BriefcaseIcon,
   TableCellsIcon,
+  BookmarkIcon,
 } from "@heroicons/react/24/solid";
 import {
   Home,
@@ -10,6 +11,7 @@ import {
   UserList,
   Jobscrape,
 } from "@/pages/dashboard";
+import IndeedScrape from "./pages/dashboard/indeed-scrape";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -42,6 +44,12 @@ export const routes = [
         name: "jobscrape",
         path: "/jobscrape",
         element: <Jobscrape />,
+      },
+      {
+        icon: <BookmarkIcon {...icon} />,
+        name: "indeed",
+        path: "/Indeed",
+        element: <IndeedScrape />,
       },
     ],
   }

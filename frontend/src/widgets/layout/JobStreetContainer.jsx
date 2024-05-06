@@ -9,7 +9,7 @@ import {
 import Pagination from "../ui/pagination";
 import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
 
-const Jobscontainer = ({ refreshKey }) => {
+const JobStreetContainer = ({ refreshKey }) => {
   const [jobListings, setJobListings] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -122,4 +122,4 @@ const Jobscontainer = ({ refreshKey }) => {
   );
 };
 
-export default Jobscontainer;
+export default JobStreetContainer;
