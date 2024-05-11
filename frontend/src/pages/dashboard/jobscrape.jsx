@@ -1,4 +1,9 @@
-import { Typography } from "@material-tailwind/react";
+import {
+  Typography,
+  Card,
+  CardBody,
+  CardHeader,
+} from "@material-tailwind/react";
 import TextField from "@/widgets/ui/textfield";
 import Dropdown from "@/widgets/ui/dropdown";
 import CustomButton from "@/widgets/ui/Button";
@@ -80,10 +85,7 @@ export const Jobscrape = () => {
 
   return (
     <div>
-      <Typography variant="h1" color="green">
-        ---
-      </Typography>
-      <form action="" className="container mx-auto">
+      <form action="" className="container mx-auto mt-10">
         <div className="flex flex-col flex-wrap justify-center space-x-2 md:flex-row">
           <div className="mb-2">
             <TextField
@@ -134,8 +136,21 @@ export const Jobscrape = () => {
         </div>
       </form>
 
-      <div className="mt-5 flex h-screen items-center justify-center overflow-scroll rounded-lg bg-gray-100 md:mt-auto">
-        <JobStreetContainer refreshKey={refreshKey} />
+      <div className="mt-5 flex h-screen w-full items-center justify-center rounded-lg bg-gray-100 md:mt-auto">
+        <Card className="w-full">
+          <CardHeader
+            variant="gradient"
+            color="gray"
+            className="mb-8 w-auto p-6"
+          >
+            <Typography variant="h6" color="white">
+              Job List
+            </Typography>
+          </CardHeader>
+          <CardBody className="px-0 pb-2 pt-0">
+            <JobStreetContainer refreshKey={refreshKey} />
+          </CardBody>
+        </Card>
       </div>
     </div>
   );

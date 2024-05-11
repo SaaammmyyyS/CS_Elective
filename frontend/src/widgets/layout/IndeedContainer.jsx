@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardFooter,
-  Typography,
-} from "@material-tailwind/react";
+import { Typography, Input } from "@material-tailwind/react";
 import Pagination from "../ui/pagination";
 import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { FilterMatchMode } from "primereact/api";
 
 const JobStreetContainer = ({ refreshKey }) => {
   const [jobListings, setJobListings] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const pageSize = 10;
+
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  });
 
   const baseUrl = `http://localhost:8000/api/indeed-scrape/`;
   useEffect(() => {
@@ -42,82 +43,87 @@ const JobStreetContainer = ({ refreshKey }) => {
     }
   };
 
+  const renderVisitLink = (rowData) => {
+    return (
+      <a
+        href={rowData.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className=" flex items-center space-x-1 hover:text-green-400"
+      >
+        <Typography variant="h6" className="hover:text-green-400">
+          Visit
+        </Typography>
+        <NavigateNextRoundedIcon />
+      </a>
+    );
+  };
+
   return (
-    <div className="mb-8  flex flex-col gap-5 overflow-scroll md:w-full">
-      <Card className="overflow-scroll">
-        <CardHeader variant="gradient" color="gray" className="mb-8 w-auto p-6">
-          <Typography variant="h6" color="white">
-            Job List
-          </Typography>
-        </CardHeader>
-        <CardBody className="overflow-x-scroll px-0 pb-2 pt-0">
-          <table className="w-full min-w-[640px] table-auto">
-            <thead>
-              <tr>
-                {["Title", "Company", "Status", "Action"].map((el) => (
-                  <th
-                    key={el}
-                    className="border-b border-blue-gray-50 px-5 py-3 text-left"
-                  >
-                    <Typography
-                      variant="small"
-                      className="text-[11px] font-bold uppercase text-blue-gray-400"
-                    >
-                      {el}
-                    </Typography>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {jobListings.map((job, index) => (
-                <tr key={index}>
-                  <td className="border-b border-blue-gray-50 px-5 py-3">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-semibold"
-                    >
-                      {job.title}
-                    </Typography>
-                  </td>
-                  <td className="border-b border-blue-gray-50 px-5 py-3">
-                    <Typography>{job.company}</Typography>
-                  </td>
+    <div className="h-full md:w-full">
+      <div className="flex w-full justify-end pr-5">
+        <div className="w-60">
+          <Input
+            label="Search"
+            onInput={(e) => {
+              setFilters({
+                global: {
+                  value: e.target.value,
+                  matchMode: FilterMatchMode.CONTAINS,
+                },
+              });
+            }}
+          />
+        </div>
+      </div>
 
-                  <td className="border-b border-blue-gray-50 px-5 py-3">
-                    <Typography>{job.status} </Typography>
-                  </td>
+      <div className="w-full min-w-[640px]">
+        <DataTable
+          value={jobListings}
+          className="my-4 table-auto border-collapse space-x-2 whitespace-nowrap border-black px-8"
+          filters={filters}
+          sortMode="multiple"
+        >
+          <Column
+            field="title"
+            header="Title"
+            sortable
+            className="border-t py-4 text-sm font-semibold"
+            headerClassName="uppercase text-blue-gray-400 font-bold text-sm  space-x-2 py-3"
+          />
+          <Column
+            field="company"
+            header="Company"
+            sortable
+            className="border-t font-light"
+            headerClassName="uppercase text-blue-gray-400 font-bold text-sm space-x-2"
+          />
+          <Column
+            field="status"
+            header="Status"
+            sortable
+            className="border-t"
+            headerClassName="uppercase text-blue-gray-400 font-bold text-sm  space-x-2"
+          />
+          <Column
+            header="Action"
+            field="Visit"
+            body={renderVisitLink}
+            className="border-t"
+            headerClassName="uppercase text-blue-gray-400 font-bold text-sm space-x-2"
+          />
+        </DataTable>
+      </div>
 
-                  <td className="border-b border-blue-gray-50 px-5 py-3">
-                    <a
-                      href={job.url}
-                      rel="noopener"
-                      target="_blank"
-                      onClick={() => window()}
-                      className=" flex items-center space-x-1 hover:text-green-400"
-                    >
-                      <Typography variant="h6" className="hover:text-green-400">
-                        Visit
-                      </Typography>
-                      <NavigateNextRoundedIcon />
-                    </a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="flex w-full justify-end p-2">
-            <Pagination
-              className="p-5"
-              baseUrl={baseUrl}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              fetchData={fetchData}
-            />
-          </div>
-        </CardBody>
-      </Card>
+      <div className="flex w-full justify-center p-2 md:justify-end">
+        <Pagination
+          className="p-5"
+          baseUrl={baseUrl}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          fetchData={fetchData}
+        />
+      </div>
     </div>
   );
 };

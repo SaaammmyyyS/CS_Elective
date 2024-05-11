@@ -10,8 +10,8 @@ import {
   Profile,
   UserList,
   Jobscrape,
+  IndeedScrape,
 } from "@/pages/dashboard";
-import IndeedScrape from "./pages/dashboard/indeed-scrape";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -41,7 +41,7 @@ export const routes = [
       },
       {
         icon: <BriefcaseIcon {...icon} />,
-        name: "jobscrape",
+        name: "jobstreet",
         path: "/jobscrape",
         element: <Jobscrape />,
       },
@@ -52,7 +52,7 @@ export const routes = [
         element: <IndeedScrape />,
       },
     ],
-  }
+  },
 ];
 
 export default routes;
