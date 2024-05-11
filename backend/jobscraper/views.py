@@ -4,10 +4,10 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.views import APIView
 from .serializers import UserSerializer, JobListingSerializer
+from rest_framework.pagination import PageNumberPagination
 from .models import JobListing, User
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.pagination import PageNumberPagination
 import jwt, datetime
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
@@ -183,6 +183,7 @@ class JobStreetView(APIView):
             job_listings = JobListing.objects.filter(user_id=user_id, data_from='Job Street').values('title', 'company', 'status', 'url')
             serializer = JobListingSerializer(job_listings, many=True)
             return Response(serializer.data)
+        
         except AuthenticationFailed as e:
             return Response({"error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
         except Exception as e:
@@ -290,6 +291,7 @@ class JobStreetView(APIView):
         return Response({"message": "Job listings scraped and saved successfully"})
 
 class IndeedView(APIView):
+
     def post(self, request):
         keyword = request.data.get('keyword')
         location = request.data.get('location')
@@ -327,7 +329,7 @@ class IndeedView(APIView):
             driver.get("https://ph.indeed.com/")
             driver.maximize_window()
 
-            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "text-input-what")))
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "text-input-what")))
 
             keyword_input = driver.find_element_by_id("text-input-what")
             keyword_input.send_keys(keyword)
@@ -405,9 +407,7 @@ class IndeedView(APIView):
             return Response({"error": {e}}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response({"message": "Job listings scraped and saved successfully"})
-
     
-
     def post(self, request):
         keyword = request.data.get('keyword')
         location = request.data.get('location')
