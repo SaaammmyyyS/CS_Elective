@@ -158,7 +158,6 @@ class AllUsersView(APIView):
 
 
 class JobStreetView(APIView):
-    pagination_class = StandardResultsSetPagination
     def post(self, request):
         keyword = request.data.get('keyword')
         location = request.data.get('location')
@@ -182,10 +181,8 @@ class JobStreetView(APIView):
         try:
             user_id = self.extract_user_id_from_jwt(request)
             job_listings = JobListing.objects.filter(user_id=user_id, data_from='Job Street').values('title', 'company', 'status', 'url')
-            paginator = self.pagination_class()
-            paginated_queryset = paginator.paginate_queryset(job_listings, request)
-            serializer = JobListingSerializer(paginated_queryset, many=True)
-            return paginator.get_paginated_response(serializer.data)
+            serializer = JobListingSerializer(job_listings, many=True)
+            return Response(serializer.data)
         except AuthenticationFailed as e:
             return Response({"error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
         except Exception as e:
@@ -293,8 +290,6 @@ class JobStreetView(APIView):
         return Response({"message": "Job listings scraped and saved successfully"})
 
 class IndeedView(APIView):
-    pagination_class = StandardResultsSetPagination
-
     def post(self, request):
         keyword = request.data.get('keyword')
         location = request.data.get('location')
@@ -316,10 +311,8 @@ class IndeedView(APIView):
         try:
             user_id = self.extract_user_id_from_jwt(request)
             job_listings = JobListing.objects.filter(user_id=user_id, data_from='Indeed').values('title', 'company', 'status', 'url')
-            paginator = self.pagination_class()
-            paginated_queryset = paginator.paginate_queryset(job_listings, request)
-            serializer = JobListingSerializer(paginated_queryset, many=True)
-            return paginator.get_paginated_response(serializer.data)
+            serializer = JobListingSerializer(job_listings, many=True)
+            return Response(serializer.data)
         except AuthenticationFailed as e:
             return Response({"error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
         except Exception as e:
