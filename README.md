@@ -1,5 +1,3 @@
-
-
 ![GitHub last commit](https://img.shields.io/github/last-commit/SaaammmyyyS/CS_Elective?style=for-the-badge&logo=Github)
 ![GitHub forks](https://img.shields.io/github/forks/SaaammmyyyS/CS_Elective?style=for-the-badge&logo=Github)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/SaaammmyyyS/CS_Elective?style=for-the-badge&logo=github)
@@ -17,7 +15,7 @@
   <p align="center">
      Quit job hunting like it's your full-time job! Let our Job Scrapper do the dirty work while you Netflix and apply!
     <br />
-    <a href="https://github.com/SaaammmyyyS/CS_Elective"><strong>Explore the project»</strong></a>
+    <a href="https://github.com/SaaammmyyyS/CS_Elective"><strong>Explore the project »</strong></a>
     <br />
     <br />
     <a href="https://github.com/SaaammmyyyS/CS_Elective">View Demo</a>
@@ -31,16 +29,16 @@
 
 <!-- TABLE OF CONTENTS -->
 <details>
-  <summary>Table of Contents </summary>
+  <summary>Table of Contents</summary>
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-        <li><a href ="#how-this-project-helps">How this project helps</a></li>
+        <li><a href="#how-this-project-helps">How this project helps</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
-    <li> <a href="#requirements">Requirements</a></li>
+    <li><a href="#requirements">Requirements</a></li>
     <li><a href="#getting-started">Getting Started</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
@@ -76,23 +74,27 @@ The Job Scraper offers several benefits to job seekers:
 
 Overall, the Job Scraper using Selenium WebDriver serves as a valuable tool for job seekers looking to streamline their job search process and discover new employment opportunities with ease.
 
+### Database Schema
 
+#### User Table
+| Attribute | Type    | Description        |
+|-----------|---------|--------------------|
+| name      | String  | Name of the user   |
+| role      | Enum    | Role of the user (e.g., admin, user) |
+| email     | String  | Email address      |
+| password  | String  | User password      |
 
+#### JobListing Table
+| Attribute  | Type   | Description                       |
+|------------|--------|-----------------------------------|
+| title      | String | Title of the job listing          |
+| company    | String | Company offering the job          |
+| keyword    | String | Keywords associated with the job  |
+| url        | Text   | URL to the job listing            |
+| data_from  | String | Source of the job listing data    |
+| user_id    | ID     | Associated user (foreign key)     |
+| status     | String | Status of the job listing         |
 
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-### Built With
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
-
-[![Static Badge](https://img.shields.io/badge/Django-black?style=for-the-badge&logo=Django&link=https%3A%2F%2Fwww.djangoproject.com%2F)](https://www.djangoproject.com/)
-
-[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-
-
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 
@@ -130,10 +132,28 @@ This project requires the following dependencies to be installed:
     pip install django-cors-headers
     ```
 
-7. **Selenium**: Selenium is required for web scraping functionality. Install version 4.1.3 using pip:
+8. **Selenium**: Selenium is required for web scraping functionality. Install version 4.1.3 using pip:
 
     ```bash
     pip install selenium==4.1.3
+    ```
+
+9. **React Router**: React Router is needed for handling routes in the React application. Install it using npm:
+
+    ```bash
+    npm install react-router-dom
+    ```
+
+10. **react-toastify**: react-toastify is required for providing toast notifications in the React application. Install it using npm:
+
+    ```bash
+    npm install react-toastify
+    ```
+
+11. **react-preloaders**: react-preloaders is needed for showing loading animations in the React application. Install it using npm:
+
+    ```bash
+    npm install react-preloaders
     ```
 
 ### Getting Started
@@ -162,6 +182,13 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+### Built With
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
+
+[![Static Badge](https://img.shields.io/badge/Django-black?style=for-the-badge&logo=Django&link=https%3A%2F%2Fwww.djangoproject.com%2F)](https://www.djangoproject.com/)
+
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -201,5 +228,3 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
