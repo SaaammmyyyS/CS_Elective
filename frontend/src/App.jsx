@@ -15,6 +15,8 @@ function App() {
 
         <Route path="/auth/sign-up" element={<SignUp />} />
         <Route path="/auth/sign-in" element={<SignIn />} />
+
+        <Route path="*" element={<Navigate to="/dashboard/home" replace />} />
       </Routes>
       <Sugar
         time={2000}
