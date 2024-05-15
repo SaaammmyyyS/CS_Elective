@@ -397,6 +397,7 @@ class IndeedView(APIView):
                     company=listing['company'],
                     url=listing['url'],
                     user_id=user_id,
+                    data_from='Indeed',
                     status='open'
                 )
         except IntegrityError as e:
