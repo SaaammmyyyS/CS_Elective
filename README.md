@@ -183,6 +183,18 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+## Contributing
+
+This project is made possible by contributions from:
+
+- Ivan Sam Wabina
+- Ron Bersabal
+- Janriz Prado
+
+If you'd like to contribute to this project, feel free to fork the repository, make your changes, and submit a pull request. Your contributions are greatly appreciated!
+
+
+
 ### Built With
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
 
